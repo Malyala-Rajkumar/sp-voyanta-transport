@@ -1,0 +1,165 @@
+{
+  "gokarna": {
+    "primary_code": "GOK",
+    "cluster_codes": [
+      "GOK"
+    ],
+    "city": "Gokarna",
+    "station_name": "Gokarna Road",
+    "display_label": "Gokarna (GOK)"
+  },
+  "auroville": {
+    "primary_code": "MNY",
+    "cluster_codes": [
+      "MNY"
+    ],
+    "city": "Auroville",
+    "station_name": "Mailam",
+    "display_label": "Auroville (via Mailam MNY)"
+  },
+  "hampi": {
+    "primary_code": "HPT",
+    "cluster_codes": [
+      "HPT"
+    ],
+    "city": "Hampi",
+    "station_name": "Hosapete Junction",
+    "display_label": "Hampi via Hosapete (HPT)"
+  },
+  "khammam": {
+    "primary_code": "KMT",
+    "cluster_codes": [
+      "KMT"
+    ],
+    "city": "Khammam",
+    "station_name": "Khammam",
+    "display_label": "Khammam (KMT)"
+  },
+  "mahabubabad": {
+    "primary_code": "MABD",
+    "cluster_codes": [
+      "MABD"
+    ],
+    "city": "Mahabubabad",
+    "station_name": "Mahabubabad",
+    "display_label": "Mahabubabad (MABD)"
+  },
+  "warangal": {
+    "primary_code": "WL",
+    "cluster_codes": [
+      "WL"
+    ],
+    "city": "Warangal",
+    "station_name": "Warangal Junction",
+    "display_label": "Warangal (WL)"
+  },
+  "perupalem beach": {
+    "primary_code": "PVM",
+    "cluster_codes": [
+      "PVM"
+    ],
+    "city": "Perupalem",
+    "station_name": "Perupalem",
+    "display_label": "Perupalem (PVM)"
+  },
+  "pondicherry": {
+    "primary_code": "PDY",
+    "cluster_codes": [
+      "PDY"
+    ],
+    "city": "Puducherry",
+    "station_name": "Puducherry",
+    "display_label": "Puducherry (PDY)"
+  },
+  "surathkal mangalore": {
+    "primary_code": "SLK",
+    "cluster_codes": [
+      "SLK",
+      "MAQ",
+      "MAJN"
+    ],
+    "city": "Mangalore",
+    "station_name": "Surathkal",
+    "display_label": "Mangalore - Surathkal (SLK)"
+  },
+  "puducherry": {
+    "primary_code": "PDY",
+    "cluster_codes": [
+      "PDY"
+    ],
+    "city": "Puducherry",
+    "station_name": "Puducherry",
+    "display_label": "Puducherry (PDY)"
+  },
+  "mangalore": {
+    "primary_code": "MAQ",
+    "cluster_codes": [
+      "MAQ",
+      "MAJN"
+    ],
+    "city": "Mangalore",
+    "station_name": "Mangaluru Central",
+    "display_label": "Mangalore - Mangaluru Central (MAQ)"
+  },
+  "uppal": {
+    "primary_code": "OPL",
+    "cluster_codes": [
+      "SC",
+      "HYB",
+      "KCG",
+      "OPL"
+    ],
+    "city": "Hyderabad",
+    "station_name": "Uppal",
+    "display_label": "Hyderabad - Uppal (OPL)"
+  },
+  "gachibowli": {
+    "primary_code": "SC",
+    "cluster_codes": [
+      "SC",
+      "HYB",
+      "KCG",
+      "LPI",
+      "BMT"
+    ],
+    "city": "Hyderabad",
+    "station_name": "Secunderabad Junction",
+    "display_label": "Hyderabad - Gachibowli (via SC/LPI)"
+  },
+  "surath": {
+    "primary_code": "SVT",
+    "cluster_codes": [
+      "SVT"
+    ],
+    "city": "Surathkal",
+    "station_name": "Surathkal",
+    "display_label": "Surathkal (SVT)"
+  },
+  "surat": {
+    "primary_code": "ST",
+    "cluster_codes": [
+      "ST"
+    ],
+    "city": "Surat",
+    "station_name": "Surat",
+    "display_label": "Surat (ST)"
+  },
+  "lonavala": {
+    "primary_code": "LNL",
+    "cluster_codes": [
+      "LNL"
+    ],
+    "city": "Lonavala",
+    "station_name": "Lonavala Junction",
+    "display_label": "Lonavala (LNL)"
+  },
+  "alappuzha": {
+    "primary_code": "ALLP",
+    "cluster_codes": [
+      "ALLP"
+    ],
+    "city": "Alappuzha",
+    "station_name": "Alappuzha",
+    "display_label": "Alappuzha (ALLP)"
+  }
+}
