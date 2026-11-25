@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FLIGHTS_DIR = os.path.join(BASE_DIR, "flights")
-TRAINS_DIR = os.path.join(BASE_DIR, "train booking")
+TRAINS_DIR = os.path.join(BASE_DIR, "trains")
 
 for d in (FLIGHTS_DIR, TRAINS_DIR, BASE_DIR):
     if d not in sys.path:

@@ -1,0 +1,346 @@
+{
+  "hyderabad": {
+    "city": "Hyderabad",
+    "primary_code": "HYD",
+    "alternate_codes": [],
+    "airport_name": "Rajiv Gandhi International Airport",
+    "region": "Telangana"
+  },
+  "secunderabad": {
+    "city": "Hyderabad / Secunderabad",
+    "primary_code": "HYD",
+    "alternate_codes": [],
+    "airport_name": "Rajiv Gandhi International Airport",
+    "region": "Telangana"
+  },
+  "goa": {
+    "city": "Goa (All Airports)",
+    "primary_code": "GOI",
+    "alternate_codes": [
+      "GOX"
+    ],
+    "airport_name": "Dabolim (GOI) / Manohar Mopa (GOX)",
+    "region": "Goa"
+  },
+  "north goa": {
+    "city": "Goa (North - Mopa)",
+    "primary_code": "GOX",
+    "alternate_codes": [
+      "GOI"
+    ],
+    "airport_name": "Manohar International Airport Mopa",
+    "region": "Goa"
+  },
+  "south goa": {
+    "city": "Goa (South - Dabolim)",
+    "primary_code": "GOI",
+    "alternate_codes": [
+      "GOX"
+    ],
+    "airport_name": "Dabolim Airport",
+    "region": "Goa"
+  },
+  "delhi": {
+    "city": "Delhi / NCR",
+    "primary_code": "DEL",
+    "alternate_codes": [],
+    "airport_name": "Indira Gandhi International Airport",
+    "region": "Delhi"
+  },
+  "new delhi": {
+    "city": "Delhi / NCR",
+    "primary_code": "DEL",
+    "alternate_codes": [],
+    "airport_name": "Indira Gandhi International Airport",
+    "region": "Delhi"
+  },
+  "mumbai": {
+    "city": "Mumbai",
+    "primary_code": "BOM",
+    "alternate_codes": [],
+    "airport_name": "Chhatrapati Shivaji Maharaj International Airport",
+    "region": "Maharashtra"
+  },
+  "bombay": {
+    "city": "Mumbai",
+    "primary_code": "BOM",
+    "alternate_codes": [],
+    "airport_name": "Chhatrapati Shivaji Maharaj International Airport",
+    "region": "Maharashtra"
+  },
+  "bangalore": {
+    "city": "Bengaluru",
+    "primary_code": "BLR",
+    "alternate_codes": [],
+    "airport_name": "Kempegowda International Airport",
+    "region": "Karnataka"
+  },
+  "bengaluru": {
+    "city": "Bengaluru",
+    "primary_code": "BLR",
+    "alternate_codes": [],
+    "airport_name": "Kempegowda International Airport",
+    "region": "Karnataka"
+  },
+  "jaipur": {
+    "city": "Jaipur",
+    "primary_code": "JAI",
+    "alternate_codes": [],
+    "airport_name": "Jaipur International Airport",
+    "region": "Rajasthan"
+  },
+  "kochi": {
+    "city": "Kochi / Cochin",
+    "primary_code": "COK",
+    "alternate_codes": [],
+    "airport_name": "Cochin International Airport",
+    "region": "Kerala"
+  },
+  "cochin": {
+    "city": "Kochi / Cochin",
+    "primary_code": "COK",
+    "alternate_codes": [],
+    "airport_name": "Cochin International Airport",
+    "region": "Kerala"
+  },
+  "chennai": {
+    "city": "Chennai",
+    "primary_code": "MAA",
+    "alternate_codes": [],
+    "airport_name": "Chennai International Airport",
+    "region": "Tamil Nadu"
+  },
+  "madras": {
+    "city": "Chennai",
+    "primary_code": "MAA",
+    "alternate_codes": [],
+    "airport_name": "Chennai International Airport",
+    "region": "Tamil Nadu"
+  },
+  "kolkata": {
+    "city": "Kolkata",
+    "primary_code": "CCU",
+    "alternate_codes": [],
+    "airport_name": "Netaji Subhash Chandra Bose International Airport",
+    "region": "West Bengal"
+  },
+  "calcutta": {
+    "city": "Kolkata",
+    "primary_code": "CCU",
+    "alternate_codes": [],
+    "airport_name": "Netaji Subhash Chandra Bose International Airport",
+    "region": "West Bengal"
+  },
+  "pune": {
+    "city": "Pune",
+    "primary_code": "PNQ",
+    "alternate_codes": [],
+    "airport_name": "Pune International Airport",
+    "region": "Maharashtra"
+  },
+  "ahmedabad": {
+    "city": "Ahmedabad",
+    "primary_code": "AMD",
+    "alternate_codes": [],
+    "airport_name": "Sardar Vallabhbhai Patel International Airport",
+    "region": "Gujarat"
+  },
+  "visakhapatnam": {
+    "city": "Visakhapatnam",
+    "primary_code": "VTZ",
+    "alternate_codes": [],
+    "airport_name": "Visakhapatnam International Airport",
+    "region": "Andhra Pradesh"
+  },
+  "vizag": {
+    "city": "Visakhapatnam",
+    "primary_code": "VTZ",
+    "alternate_codes": [],
+    "airport_name": "Visakhapatnam International Airport",
+    "region": "Andhra Pradesh"
+  },
+  "vijayawada": {
+    "city": "Vijayawada",
+    "primary_code": "VGA",
+    "alternate_codes": [],
+    "airport_name": "Vijayawada International Airport",
+    "region": "Andhra Pradesh"
+  },
+  "tirupati": {
+    "city": "Tirupati",
+    "primary_code": "TIR",
+    "alternate_codes": [],
+    "airport_name": "Tirupati Airport",
+    "region": "Andhra Pradesh"
+  },
+  "varanasi": {
+    "city": "Varanasi",
+    "primary_code": "VNS",
+    "alternate_codes": [],
+    "airport_name": "Lal Bahadur Shastri International Airport",
+    "region": "Uttar Pradesh"
+  },
+  "banaras": {
+    "city": "Varanasi",
+    "primary_code": "VNS",
+    "alternate_codes": [],
+    "airport_name": "Lal Bahadur Shastri International Airport",
+    "region": "Uttar Pradesh"
+  },
+  "srinagar": {
+    "city": "Srinagar",
+    "primary_code": "SXR",
+    "alternate_codes": [],
+    "airport_name": "Sheikh ul-Alam International Airport",
+    "region": "Jammu & Kashmir"
+  },
+  "amritsar": {
+    "city": "Amritsar",
+    "primary_code": "ATQ",
+    "alternate_codes": [],
+    "airport_name": "Sri Guru Ram Dass Jee International Airport",
+    "region": "Punjab"
+  },
+  "chandigarh": {
+    "city": "Chandigarh",
+    "primary_code": "IXC",
+    "alternate_codes": [],
+    "airport_name": "Shaheed Bhagat Singh International Airport",
+    "region": "Punjab/Haryana"
+  },
+  "lucknow": {
+    "city": "Lucknow",
+    "primary_code": "LKO",
+    "alternate_codes": [],
+    "airport_name": "Chaudhary Charan Singh International Airport",
+    "region": "Uttar Pradesh"
+  },
+  "guwahati": {
+    "city": "Guwahati",
+    "primary_code": "GAU",
+    "alternate_codes": [],
+    "airport_name": "Lokpriya Gopinath Bordoloi International Airport",
+    "region": "Assam"
+  },
+  "bhubaneswar": {
+    "city": "Bhubaneswar",
+    "primary_code": "BBI",
+    "alternate_codes": [],
+    "airport_name": "Biju Patnaik International Airport",
+    "region": "Odisha"
+  },
+  "indore": {
+    "city": "Indore",
+    "primary_code": "IDR",
+    "alternate_codes": [],
+    "airport_name": "Devi Ahilya Bai Holkar Airport",
+    "region": "Madhya Pradesh"
+  },
+  "patna": {
+    "city": "Patna",
+    "primary_code": "PAT",
+    "alternate_codes": [],
+    "airport_name": "Jay Prakash Narayan Airport",
+    "region": "Bihar"
+  },
+  "bagdogra": {
+    "city": "Bagdogra / Darjeeling",
+    "primary_code": "IXB",
+    "alternate_codes": [],
+    "airport_name": "Bagdogra International Airport",
+    "region": "West Bengal"
+  },
+  "udaipur": {
+    "city": "Udaipur",
+    "primary_code": "UDR",
+    "alternate_codes": [],
+    "airport_name": "Maharana Pratap Airport",
+    "region": "Rajasthan"
+  },
+  "jodhpur": {
+    "city": "Jodhpur",
+    "primary_code": "JOD",
+    "alternate_codes": [],
+    "airport_name": "Jodhpur Airport",
+    "region": "Rajasthan"
+  },
+  "dehradun": {
+    "city": "Dehradun / Rishikesh",
+    "primary_code": "DED",
+    "alternate_codes": [],
+    "airport_name": "Jolly Grant Airport",
+    "region": "Uttarakhand"
+  },
+  "mangalore": {
+    "city": "Mangalore",
+    "primary_code": "IXE",
+    "alternate_codes": [],
+    "airport_name": "Mangaluru International Airport",
+    "region": "Karnataka"
+  },
+  "coimbatore": {
+    "city": "Coimbatore",
+    "primary_code": "CJB",
+    "alternate_codes": [],
+    "airport_name": "Coimbatore International Airport",
+    "region": "Tamil Nadu"
+  },
+  "madurai": {
+    "city": "Madurai",
+    "primary_code": "IXM",
+    "alternate_codes": [],
+    "airport_name": "Madurai Airport",
+    "region": "Tamil Nadu"
+  },
+  "thiruvananthapuram": {
+    "city": "Thiruvananthapuram / Trivandrum",
+    "primary_code": "TRV",
+    "alternate_codes": [],
+    "airport_name": "Thiruvananthapuram International Airport",
+    "region": "Kerala"
+  },
+  "trivandrum": {
+    "city": "Thiruvananthapuram / Trivandrum",
+    "primary_code": "TRV",
+    "alternate_codes": [],
+    "airport_name": "Thiruvananthapuram International Airport",
+    "region": "Kerala"
+  },
+  "munnar": {
+    "city": "Munnar (Nearest: Kochi)",
+    "primary_code": "COK",
+    "alternate_codes": [
+      "IXM"
+    ],
+    "airport_name": "Cochin International Airport (approx 110 km)",
+    "region": "Kerala"
+  },
+  "manali": {
+    "city": "Manali (Nearest: Kullu/Bhuntar or Chandigarh)",
+    "primary_code": "IXC",
+    "alternate_codes": [
+      "KUU",
+      "DEL"
+    ],
+    "airport_name": "Chandigarh Airport (IXC) / Bhuntar (KUU)",
+    "region": "Himachal Pradesh"
+  },
+  "rishikesh": {
+    "city": "Rishikesh (Nearest: Dehradun)",
+    "primary_code": "DED",
+    "alternate_codes": [
+      "DEL"
+    ],
+    "airport_name": "Jolly Grant Airport Dehradun (approx 20 km)",
+    "region": "Uttarakhand"
+  },
+  "hampi": {
+    "city": "Hampi (Nearest: Hubli / Jindal)",
+    "primary_code": "HBX",
+    "alternate_codes": [
+      "BLR"
+    ],
+    "airport_name": "Hubballi Airport / Bengaluru",
+    "region": "Karnataka"
+  }
+}

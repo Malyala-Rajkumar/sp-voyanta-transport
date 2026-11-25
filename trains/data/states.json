@@ -1,0 +1,58 @@
+{
+  "andhra pradesh": [
+    {"code": "BZA", "city": "Vijayawada"},
+    {"code": "VSKP", "city": "Visakhapatnam"},
+    {"code": "TPTY", "city": "Tirupati"},
+    {"code": "RJY", "city": "Rajahmundry"},
+    {"code": "GNT", "city": "Guntur"}
+  ],
+  "kerala": [
+    {"code": "ERS", "city": "Kochi / Ernakulam"},
+    {"code": "TVC", "city": "Thiruvananthapuram"},
+    {"code": "CLT", "city": "Kozhikode"},
+    {"code": "TCR", "city": "Thrissur"}
+  ],
+  "rajasthan": [
+    {"code": "JP", "city": "Jaipur"},
+    {"code": "JU", "city": "Jodhpur"},
+    {"code": "UDZ", "city": "Udaipur"},
+    {"code": "AII", "city": "Ajmer"}
+  ],
+  "tamil nadu": [
+    {"code": "MAS", "city": "Chennai Central"},
+    {"code": "CBE", "city": "Coimbatore"},
+    {"code": "MDU", "city": "Madurai"},
+    {"code": "TPJ", "city": "Tiruchirappalli"}
+  ],
+  "maharashtra": [
+    {"code": "CSMT", "city": "Mumbai CSMT"},
+    {"code": "PUNE", "city": "Pune"},
+    {"code": "NGP", "city": "Nagpur"},
+    {"code": "AWB", "city": "Chhatrapati Sambhajinagar"}
+  ],
+  "karnataka": [
+    {"code": "SBC", "city": "Bengaluru KSR"},
+    {"code": "MYS", "city": "Mysuru"},
+    {"code": "UBL", "city": "Hubballi"},
+    {"code": "MAJN", "city": "Mangaluru"}
+  ],
+  "gujarat": [
+    {"code": "ADI", "city": "Ahmedabad"},
+    {"code": "ST", "city": "Surat"},
+    {"code": "BRC", "city": "Vadodara"},
+    {"code": "RJT", "city": "Rajkot"}
+  ],
+  "uttar pradesh": [
+    {"code": "LKO", "city": "Lucknow"},
+    {"code": "BSB", "city": "Varanasi"},
+    {"code": "CNB", "city": "Kanpur"},
+    {"code": "AGC", "city": "Agra"},
+    {"code": "PRYJ", "city": "Prayagraj"}
+  ],
+  "west bengal": [
+    {"code": "HWH", "city": "Kolkata Howrah"},
+    {"code": "SDAH", "city": "Kolkata Sealdah"},
+    {"code": "NJP", "city": "New Jalpaiguri / Siliguri"},
+    {"code": "ASN", "city": "Asansol"}
+  ]
+}

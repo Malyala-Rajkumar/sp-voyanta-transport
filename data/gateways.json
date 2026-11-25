@@ -1,0 +1,119 @@
+{
+  "pakhal lake": {
+    "destination_name": "Pakhal Lake Nature Sanctuary",
+    "primary_rail_hub": "Warangal (WL)",
+    "rail_station_code": "WL",
+    "intermediate_bus_hub": "Narsampet",
+    "direct_cab_distance_km": 55.0,
+    "legs": [
+      {
+        "leg_name": "Warangal Station to Warangal RTC Bus Stand",
+        "mode": "LOCAL_TRANSFER",
+        "transit_type": "Auto-Rickshaw / Rapido",
+        "from_point": "Warangal Railway Station (WL)",
+        "to_point": "Warangal Central Bus Stand",
+        "distance_km": 3.5,
+        "notes": "Available round-the-clock outside Station Exit 1"
+      },
+      {
+        "leg_name": "Warangal to Narsampet Bus",
+        "mode": "ROAD_BUS",
+        "transit_type": "TSRTC Express / Ordinary Bus",
+        "from_point": "Warangal Central Bus Stand",
+        "to_point": "Narsampet Bus Station",
+        "distance_km": 42.0,
+        "notes": "Frequent buses every 15-20 minutes between 05:30 AM and 08:30 PM"
+      },
+      {
+        "leg_name": "Narsampet to Pakhal Lake",
+        "mode": "ROAD_AUTO",
+        "transit_type": "Local Auto-Rickshaw / Shared Jeep",
+        "from_point": "Narsampet",
+        "to_point": "Pakhal Lake Entrance",
+        "distance_km": 15.0,
+        "notes": "Shared jeeps available at ₹30/pax or private auto for ₹200"
+      }
+    ]
+  },
+  "manali": {
+    "destination_name": "Manali, Himachal Pradesh",
+    "primary_rail_hub": "Chandigarh (CDG)",
+    "rail_station_code": "CDG",
+    "intermediate_bus_hub": "Kullu",
+    "direct_cab_distance_km": 290.0,
+    "legs": [
+      {
+        "leg_name": "Chandigarh Station to ISBT Sector 43",
+        "mode": "LOCAL_TRANSFER",
+        "transit_type": "CTU AC Bus / Prepaid Auto / Ola",
+        "from_point": "Chandigarh Railway Station (CDG)",
+        "to_point": "ISBT Sector 43 Bus Terminal",
+        "distance_km": 12.0,
+        "notes": "Take CTU Route 35 or prepaid auto directly to ISBT 43"
+      },
+      {
+        "leg_name": "Chandigarh to Manali Volvo / HRTC Bus",
+        "mode": "ROAD_BUS",
+        "transit_type": "HRTC Himsuta AC Volvo / Deluxe Bus",
+        "from_point": "ISBT Sector 43, Chandigarh",
+        "to_point": "Manali Mall Road Bus Stand",
+        "distance_km": 290.0,
+        "notes": "Runs via the new Kiratpur-Nerchowk 4-lane expressway; overnight and morning departures"
+      }
+    ]
+  },
+  "shimla": {
+    "destination_name": "Shimla, Himachal Pradesh",
+    "primary_rail_hub": "Kalka (KLK)",
+    "rail_station_code": "KLK",
+    "intermediate_bus_hub": "Solan",
+    "direct_cab_distance_km": 88.0,
+    "legs": [
+      {
+        "leg_name": "Kalka to Shimla Heritage Toy Train or Shared Taxi",
+        "mode": "HERITAGE_TRAIN_OR_ROAD",
+        "transit_type": "Kalka-Shimla Toy Train / Mountain Taxi",
+        "from_point": "Kalka Railway Station (KLK)",
+        "to_point": "Shimla Old Bus Stand / Mall Road",
+        "distance_km": 88.0,
+        "notes": "UNESCO Heritage Toy Train connects directly with Kalka Shatabdi Express from Delhi"
+      }
+    ]
+  },
+  "munnar": {
+    "destination_name": "Munnar, Kerala",
+    "primary_rail_hub": "Aluva (AWY) / Ernakulam (ERS)",
+    "rail_station_code": "AWY",
+    "intermediate_bus_hub": "Kothamangalam",
+    "direct_cab_distance_km": 115.0,
+    "legs": [
+      {
+        "leg_name": "Aluva Station to Munnar Ghat Road",
+        "mode": "ROAD_BUS",
+        "transit_type": "KSRTC Fast Passenger / Ghat Road Cab",
+        "from_point": "Aluva KSRTC Stand (opp. Station)",
+        "to_point": "Munnar Central Bus Stand",
+        "distance_km": 115.0,
+        "notes": "Scenic tea-estate ghat road; buses every 45 mins"
+      }
+    ]
+  },
+  "hampi": {
+    "destination_name": "Hampi Historical Heritage Site",
+    "primary_rail_hub": "Hosapete Junction (HPT)",
+    "rail_station_code": "HPT",
+    "intermediate_bus_hub": "Hosapete Bus Stand",
+    "direct_cab_distance_km": 12.0,
+    "legs": [
+      {
+        "leg_name": "Hosapete Station to Hampi Bazaar",
+        "mode": "LOCAL_TRANSFER",
+        "transit_type": "KSRTC Red Bus / Local Auto",
+        "from_point": "Hosapete Junction (HPT)",
+        "to_point": "Hampi Bazaar / Virupaksha Temple",
+        "distance_km": 12.0,
+        "notes": "Frequent KSRTC shuttle buses run directly from Hosapete bus stand to Hampi"
+      }
+    ]
+  }
+}

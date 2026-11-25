@@ -15,7 +15,7 @@ from langchain_core.tools import tool
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FLIGHTS_DIR = os.path.join(BASE_DIR, "flights")
-TRAINS_DIR = os.path.join(BASE_DIR, "train booking")
+TRAINS_DIR = os.path.join(BASE_DIR, "trains")
 
 for p in (BASE_DIR, FLIGHTS_DIR, TRAINS_DIR):
     if p not in sys.path:

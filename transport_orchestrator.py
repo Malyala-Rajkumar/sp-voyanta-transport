@@ -21,7 +21,7 @@ from langgraph.prebuilt import ToolNode, tools_condition
 
 BASE_DIR = Path(__file__).resolve().parent
 FLIGHTS_DIR = BASE_DIR / "flights"
-TRAINS_DIR = BASE_DIR / "train booking"
+TRAINS_DIR = BASE_DIR / "trains"
 
 for p in (BASE_DIR, FLIGHTS_DIR, TRAINS_DIR):
     if str(p) not in sys.path:

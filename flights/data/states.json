@@ -1,0 +1,170 @@
+{
+  "andhra pradesh": [
+    {
+      "code": "VTZ",
+      "city": "Visakhapatnam"
+    },
+    {
+      "code": "VGA",
+      "city": "Vijayawada"
+    },
+    {
+      "code": "TIR",
+      "city": "Tirupati"
+    },
+    {
+      "code": "RJA",
+      "city": "Rajahmundry"
+    }
+  ],
+  "kerala": [
+    {
+      "code": "COK",
+      "city": "Kochi / Cochin"
+    },
+    {
+      "code": "TRV",
+      "city": "Thiruvananthapuram"
+    },
+    {
+      "code": "CCJ",
+      "city": "Kozhikode / Calicut"
+    },
+    {
+      "code": "CNN",
+      "city": "Kannur"
+    }
+  ],
+  "rajasthan": [
+    {
+      "code": "JAI",
+      "city": "Jaipur"
+    },
+    {
+      "code": "UDR",
+      "city": "Udaipur"
+    },
+    {
+      "code": "JDH",
+      "city": "Jodhpur"
+    },
+    {
+      "code": "JSA",
+      "city": "Jaisalmer"
+    }
+  ],
+  "tamil nadu": [
+    {
+      "code": "MAA",
+      "city": "Chennai"
+    },
+    {
+      "code": "CJB",
+      "city": "Coimbatore"
+    },
+    {
+      "code": "TRZ",
+      "city": "Tiruchirappalli"
+    },
+    {
+      "code": "IXM",
+      "city": "Madurai"
+    }
+  ],
+  "maharashtra": [
+    {
+      "code": "BOM",
+      "city": "Mumbai"
+    },
+    {
+      "code": "PNQ",
+      "city": "Pune"
+    },
+    {
+      "code": "NAG",
+      "city": "Nagpur"
+    },
+    {
+      "code": "IXU",
+      "city": "Aurangabad / Chhatrapati Sambhajinagar"
+    }
+  ],
+  "karnataka": [
+    {
+      "code": "BLR",
+      "city": "Bengaluru"
+    },
+    {
+      "code": "IXE",
+      "city": "Mangaluru"
+    },
+    {
+      "code": "HBX",
+      "city": "Hubballi / Hubli"
+    },
+    {
+      "code": "IXG",
+      "city": "Belagavi / Belgaum"
+    }
+  ],
+  "gujarat": [
+    {
+      "code": "AMD",
+      "city": "Ahmedabad"
+    },
+    {
+      "code": "STV",
+      "city": "Surat"
+    },
+    {
+      "code": "BDQ",
+      "city": "Vadodara"
+    },
+    {
+      "code": "RAJ",
+      "city": "Rajkot"
+    }
+  ],
+  "uttar pradesh": [
+    {
+      "code": "LKO",
+      "city": "Lucknow"
+    },
+    {
+      "code": "VNS",
+      "city": "Varanasi"
+    },
+    {
+      "code": "AYJ",
+      "city": "Ayodhya"
+    },
+    {
+      "code": "AGR",
+      "city": "Agra"
+    }
+  ],
+  "himachal pradesh": [
+    {
+      "code": "KUU",
+      "city": "Kullu / Bhuntar (Manali)"
+    },
+    {
+      "code": "DHM",
+      "city": "Dharamshala / Kangra"
+    },
+    {
+      "code": "SLV",
+      "city": "Shimla"
+    }
+  ],
+  "uttarakhand": [
+    {
+      "code": "DED",
+      "city": "Dehradun / Rishikesh"
+    },
+    {
+      "code": "PGH",
+      "city": "Pantnagar (Nainital)"
+    }
+  ]
+}

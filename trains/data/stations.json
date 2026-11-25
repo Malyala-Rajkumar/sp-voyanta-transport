@@ -1,0 +1,282 @@
+{
+  "hyderabad": {
+    "city": "Hyderabad",
+    "primary_code": "SC",
+    "cluster_codes": ["SC", "HYB", "KCG", "LPI"],
+    "station_name": "Secunderabad Junction (SC) / Hyderabad Deccan (HYB)",
+    "state": "Telangana"
+  },
+  "secunderabad": {
+    "city": "Hyderabad / Secunderabad",
+    "primary_code": "SC",
+    "cluster_codes": ["SC", "HYB", "KCG", "LPI"],
+    "station_name": "Secunderabad Junction",
+    "state": "Telangana"
+  },
+  "delhi": {
+    "city": "Delhi / NCR",
+    "primary_code": "NDLS",
+    "cluster_codes": ["NDLS", "NZM", "DLI", "ANVT", "DEE"],
+    "station_name": "New Delhi (NDLS) / Hazrat Nizamuddin (NZM)",
+    "state": "Delhi"
+  },
+  "new delhi": {
+    "city": "Delhi / NCR",
+    "primary_code": "NDLS",
+    "cluster_codes": ["NDLS", "NZM", "DLI", "ANVT", "DEE"],
+    "station_name": "New Delhi Railway Station",
+    "state": "Delhi"
+  },
+  "mumbai": {
+    "city": "Mumbai",
+    "primary_code": "CSMT",
+    "cluster_codes": ["CSMT", "MMCT", "LTT", "BDTS", "DR"],
+    "station_name": "Chhatrapati Shivaji Maharaj Terminus (CSMT) / Mumbai Central (MMCT)",
+    "state": "Maharashtra"
+  },
+  "bombay": {
+    "city": "Mumbai",
+    "primary_code": "CSMT",
+    "cluster_codes": ["CSMT", "MMCT", "LTT", "BDTS", "DR"],
+    "station_name": "Chhatrapati Shivaji Maharaj Terminus",
+    "state": "Maharashtra"
+  },
+  "goa": {
+    "city": "Goa (All Stations)",
+    "primary_code": "MAO",
+    "cluster_codes": ["MAO", "THVM", "KRMI"],
+    "station_name": "Madgaon Junction (MAO - South) / Thivim (THVM - North)",
+    "state": "Goa"
+  },
+  "north goa": {
+    "city": "Goa (North - Thivim)",
+    "primary_code": "THVM",
+    "cluster_codes": ["THVM", "KRMI", "MAO"],
+    "station_name": "Thivim Railway Station",
+    "state": "Goa"
+  },
+  "south goa": {
+    "city": "Goa (South - Madgaon)",
+    "primary_code": "MAO",
+    "cluster_codes": ["MAO", "KRMI", "THVM"],
+    "station_name": "Madgaon Junction",
+    "state": "Goa"
+  },
+  "madgaon": {
+    "city": "Goa (Madgaon)",
+    "primary_code": "MAO",
+    "cluster_codes": ["MAO", "THVM", "KRMI"],
+    "station_name": "Madgaon Junction",
+    "state": "Goa"
+  },
+  "bengaluru": {
+    "city": "Bengaluru",
+    "primary_code": "SBC",
+    "cluster_codes": ["SBC", "YPR", "SMVB", "BNC"],
+    "station_name": "KSR Bengaluru (SBC) / Yesvantpur (YPR)",
+    "state": "Karnataka"
+  },
+  "bangalore": {
+    "city": "Bengaluru",
+    "primary_code": "SBC",
+    "cluster_codes": ["SBC", "YPR", "SMVB", "BNC"],
+    "station_name": "KSR Bengaluru (SBC) / Yesvantpur (YPR)",
+    "state": "Karnataka"
+  },
+  "chennai": {
+    "city": "Chennai",
+    "primary_code": "MAS",
+    "cluster_codes": ["MAS", "MS", "TBM"],
+    "station_name": "MGR Chennai Central (MAS) / Chennai Egmore (MS)",
+    "state": "Tamil Nadu"
+  },
+  "madras": {
+    "city": "Chennai",
+    "primary_code": "MAS",
+    "cluster_codes": ["MAS", "MS", "TBM"],
+    "station_name": "MGR Chennai Central",
+    "state": "Tamil Nadu"
+  },
+  "kolkata": {
+    "city": "Kolkata",
+    "primary_code": "HWH",
+    "cluster_codes": ["HWH", "SDAH", "KOAA", "SHM"],
+    "station_name": "Howrah Junction (HWH) / Sealdah (SDAH)",
+    "state": "West Bengal"
+  },
+  "calcutta": {
+    "city": "Kolkata",
+    "primary_code": "HWH",
+    "cluster_codes": ["HWH", "SDAH", "KOAA", "SHM"],
+    "station_name": "Howrah Junction",
+    "state": "West Bengal"
+  },
+  "vijayawada": {
+    "city": "Vijayawada",
+    "primary_code": "BZA",
+    "cluster_codes": ["BZA"],
+    "station_name": "Vijayawada Junction",
+    "state": "Andhra Pradesh"
+  },
+  "visakhapatnam": {
+    "city": "Visakhapatnam",
+    "primary_code": "VSKP",
+    "cluster_codes": ["VSKP", "DVD"],
+    "station_name": "Visakhapatnam Junction",
+    "state": "Andhra Pradesh"
+  },
+  "vizag": {
+    "city": "Visakhapatnam",
+    "primary_code": "VSKP",
+    "cluster_codes": ["VSKP", "DVD"],
+    "station_name": "Visakhapatnam Junction",
+    "state": "Andhra Pradesh"
+  },
+  "tirupati": {
+    "city": "Tirupati",
+    "primary_code": "TPTY",
+    "cluster_codes": ["TPTY", "RU"],
+    "station_name": "Tirupati Main (TPTY) / Renigunta (RU)",
+    "state": "Andhra Pradesh"
+  },
+  "rajahmundry": {
+    "city": "Rajahmundry",
+    "primary_code": "RJY",
+    "cluster_codes": ["RJY"],
+    "station_name": "Rajahmundry Railway Station",
+    "state": "Andhra Pradesh"
+  },
+  "guntur": {
+    "city": "Guntur",
+    "primary_code": "GNT",
+    "cluster_codes": ["GNT"],
+    "station_name": "Guntur Junction",
+    "state": "Andhra Pradesh"
+  },
+  "kochi": {
+    "city": "Kochi / Cochin",
+    "primary_code": "ERS",
+    "cluster_codes": ["ERS", "ERN", "AWY"],
+    "station_name": "Ernakulam South (ERS) / Ernakulam Town (ERN)",
+    "state": "Kerala"
+  },
+  "cochin": {
+    "city": "Kochi / Cochin",
+    "primary_code": "ERS",
+    "cluster_codes": ["ERS", "ERN", "AWY"],
+    "station_name": "Ernakulam South",
+    "state": "Kerala"
+  },
+  "thiruvananthapuram": {
+    "city": "Thiruvananthapuram / Trivandrum",
+    "primary_code": "TVC",
+    "cluster_codes": ["TVC", "KCVL"],
+    "station_name": "Thiruvananthapuram Central (TVC) / Kochuveli (KCVL)",
+    "state": "Kerala"
+  },
+  "kozhikode": {
+    "city": "Kozhikode / Calicut",
+    "primary_code": "CLT",
+    "cluster_codes": ["CLT"],
+    "station_name": "Kozhikode Main",
+    "state": "Kerala"
+  },
+  "pune": {
+    "city": "Pune",
+    "primary_code": "PUNE",
+    "cluster_codes": ["PUNE", "SVJR", "HDP"],
+    "station_name": "Pune Junction",
+    "state": "Maharashtra"
+  },
+  "ahmedabad": {
+    "city": "Ahmedabad",
+    "primary_code": "ADI",
+    "cluster_codes": ["ADI", "SBT"],
+    "station_name": "Ahmedabad Junction (Kalupur)",
+    "state": "Gujarat"
+  },
+  "jaipur": {
+    "city": "Jaipur",
+    "primary_code": "JP",
+    "cluster_codes": ["JP", "GADJ", "DKBJ"],
+    "station_name": "Jaipur Junction",
+    "state": "Rajasthan"
+  },
+  "varanasi": {
+    "city": "Varanasi / Banaras",
+    "primary_code": "BSB",
+    "cluster_codes": ["BSB", "BSBS", "DDU"],
+    "station_name": "Varanasi Junction (BSB) / Banaras (BSBS) / Pt. DDU (DDU)",
+    "state": "Uttar Pradesh"
+  },
+  "lucknow": {
+    "city": "Lucknow",
+    "primary_code": "LKO",
+    "cluster_codes": ["LKO", "LJN"],
+    "station_name": "Lucknow Charbagh (LKO / LJN)",
+    "state": "Uttar Pradesh"
+  },
+  "agra": {
+    "city": "Agra",
+    "primary_code": "AGC",
+    "cluster_codes": ["AGC", "AF"],
+    "station_name": "Agra Cantt (AGC) / Agra Fort (AF)",
+    "state": "Uttar Pradesh"
+  },
+  "chandigarh": {
+    "city": "Chandigarh",
+    "primary_code": "CDG",
+    "cluster_codes": ["CDG"],
+    "station_name": "Chandigarh Junction",
+    "state": "Chandigarh / Punjab"
+  },
+  "amritsar": {
+    "city": "Amritsar",
+    "primary_code": "ASR",
+    "cluster_codes": ["ASR"],
+    "station_name": "Amritsar Junction",
+    "state": "Punjab"
+  },
+  "munnar": {
+    "city": "Munnar (Nearest: Aluva / Ernakulam)",
+    "primary_code": "AWY",
+    "cluster_codes": ["AWY", "ERS"],
+    "station_name": "Aluva (AWY, approx 110 km) / Ernakulam (ERS)",
+    "state": "Kerala"
+  },
+  "shimla": {
+    "city": "Shimla (Nearest: Kalka / Chandigarh)",
+    "primary_code": "KLK",
+    "cluster_codes": ["KLK", "CDG"],
+    "station_name": "Kalka (KLK - Toy Train) / Chandigarh (CDG)",
+    "state": "Himachal Pradesh"
+  },
+  "manali": {
+    "city": "Manali (Nearest: Chandigarh / Kalka)",
+    "primary_code": "CDG",
+    "cluster_codes": ["CDG", "KLK"],
+    "station_name": "Chandigarh Junction (CDG, approx 280 km)",
+    "state": "Himachal Pradesh"
+  },
+  "ooty": {
+    "city": "Ooty (Nearest: Mettupalayam / Coimbatore)",
+    "primary_code": "MTP",
+    "cluster_codes": ["MTP", "CBE"],
+    "station_name": "Mettupalayam (MTP - Toy Train) / Coimbatore (CBE)",
+    "state": "Tamil Nadu"
+  },
+  "nainital": {
+    "city": "Nainital (Nearest: Kathgodam)",
+    "primary_code": "KGM",
+    "cluster_codes": ["KGM"],
+    "station_name": "Kathgodam Railway Station (KGM, approx 35 km)",
+    "state": "Uttarakhand"
+  },
+  "rishikesh": {
+    "city": "Rishikesh / Haridwar",
+    "primary_code": "HW",
+    "cluster_codes": ["HW", "RKSH", "YNRK"],
+    "station_name": "Haridwar Junction (HW) / Yog Nagari Rishikesh (YNRK)",
+    "state": "Uttarakhand"
+  }
+}
