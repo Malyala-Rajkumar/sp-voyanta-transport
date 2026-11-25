@@ -24,7 +24,6 @@ __pycache__/
 # Subdirectory pycache
 flights/__pycache__/
 trains/__pycache__/
-"train booking/__pycache__/"
 flights/common/__pycache__/
 trains/tools/__pycache__/
 
@@ -46,6 +45,66 @@ trains/venv/
 # ------------------------------------------------------------------------------
 logs/
 *.log
+flights/logs/
+trains/logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ------------------------------------------------------------------------------
+# 5. Dynamic Runtime Caches (Local Cache JSONs)
+# ------------------------------------------------------------------------------
+gateway_cache.json
+city_cache.json
+station_cache.json
+flights/city_cache.json
+trains/station_cache.json
+"train booking/station_cache.json"
+data/maps_cache.json
+
+# Keep seed datasets in data/ tracked, only ignore maps runtime cache
+!data/gateways.json
+!flights/data/
+!trains/data/
+
+# ------------------------------------------------------------------------------
+# 6. IDEs & Editor Configuration
+# ------------------------------------------------------------------------------
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+.pydevproject
+.settings/
+
+# ------------------------------------------------------------------------------
+# 7. Jupyter Notebook Checkpoints & Outputs
+# ------------------------------------------------------------------------------
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# ------------------------------------------------------------------------------
+# 8. OS-specific Artifacts
+# ------------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ------------------------------------------------------------------------------
+# 9. Test & Coverage Outputs
+# ------------------------------------------------------------------------------
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
 flights/logs/
 trains/logs/
 npm-debug.log*
