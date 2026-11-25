@@ -1,0 +1,16 @@
+__pycache__
+data
+flights/__pycache__
+flights/.env
+train booking/__pycache__
+train booking/.vscode
+train booking/.env
+.env
+.env
+.env.*
+venv/
+node_modules/
+__pycache__/
+*.pyc
+logs/
+*.log

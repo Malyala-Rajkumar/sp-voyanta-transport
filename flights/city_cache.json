@@ -1,0 +1,86 @@
+{
+  "zurich": {
+    "iata": "ZRH",
+    "city": "Zurich",
+    "airport_name": "Zurich Airport",
+    "display_label": "Zurich (ZRH)"
+  },
+  "spiti": {
+    "iata": "KUU",
+    "city": "Kullu/Manali",
+    "airport_name": "Bhuntar Airport",
+    "display_label": "Spiti (via Bhuntar KUU, ~230 km)"
+  },
+  "munich": {
+    "iata": "MUC",
+    "city": "Munich",
+    "airport_name": "Munich Airport",
+    "display_label": "Munich (MUC)"
+  },
+  "perupalem beach": {
+    "iata": "RJA",
+    "city": "Narsapur",
+    "airport_name": "Rajahmundry Airport",
+    "display_label": "Perupalem Beach (via Rajahmundry RJA, ~95 km)"
+  },
+  "pondicherry": {
+    "iata": "PNY",
+    "city": "Pondicherry",
+    "airport_name": "Puducherry Airport",
+    "display_label": "Pondicherry (PNY)"
+  },
+  "kathmandu": {
+    "iata": "KTM",
+    "city": "Kathmandu",
+    "airport_name": "Tribhuvan International Airport",
+    "display_label": "Kathmandu (KTM)"
+  },
+  "annapurna border": {
+    "iata": "PKR",
+    "city": "Pokhara",
+    "airport_name": "Pokhara International Airport",
+    "display_label": "Annapurna Region (via Pokhara PKR)"
+  },
+  "warangal": {
+    "iata": "WGC",
+    "city": "Warangal",
+    "airport_name": "Warangal Airport",
+    "display_label": "Warangal (WGC)"
+  },
+  "puducherry": {
+    "iata": "PNY",
+    "city": "Puducherry",
+    "airport_name": "Puducherry Airport",
+    "display_label": "Puducherry (PNY)"
+  },
+  "gachibowli": {
+    "iata": "HYD",
+    "city": "Hyderabad",
+    "airport_name": "Rajiv Gandhi International Airport",
+    "display_label": "Hyderabad (HYD)"
+  },
+  "uppal": {
+    "iata": "HYD",
+    "city": "Hyderabad",
+    "airport_name": "Rajiv Gandhi International Airport",
+    "display_label": "Hyderabad (HYD)"
+  },
+  "surath": {
+    "iata": "STV",
+    "city": "Surat",
+    "airport_name": "Surat Airport",
+    "display_label": "Surat (STV)"
+  },
+  "surat": {
+    "iata": "STV",
+    "city": "Surat",
+    "airport_name": "Surat International Airport",
+    "display_label": "Surat (STV)"
+  },
+  "alappuzha": {
+    "iata": "COK",
+    "city": "Alappuzha",
+    "airport_name": "Cochin International Airport",
+    "display_label": "Alappuzha (via Kochi COK, ~85 km)"
+  }
+}
