@@ -651,7 +651,7 @@ def plan_end_to_end_journey(
     norm_src_lower = source.strip().lower()
     if dep_airport_city and norm_src_lower != dep_airport_city.lower():
         # Source is a distinct locality/neighborhood (e.g. Gachibowli, Uppal, Whitefield)
-        airport_dest = f"{dep_airport_name}, India" if dep_airport_name else f"{dep_airport_city} Airport, India"
+        airport_dest = dep_airport_name if dep_airport_name else f"{dep_airport_city} Airport"
         airport_transit = calculate_generic_road_transit(
             from_place=source,
             to_place=airport_dest,
@@ -683,7 +683,7 @@ def plan_end_to_end_journey(
         )
 
         # First mile to train station
-        stn_dest = f"{src_stn_name}, India" if src_stn_name else f"{src_stn_city} Railway Station, India"
+        stn_dest = src_stn_name if src_stn_name else f"{src_stn_city} Railway Station"
         stn_transit = calculate_generic_road_transit(
             from_place=source,
             to_place=stn_dest,
@@ -732,6 +732,48 @@ def plan_end_to_end_journey(
         if alt_trains:
             top_trains = alt_trains
 
+    # Fallback: If no direct trains to destination, try nearest major railway hub (Places hub or nearest airport city)
+    actual_rail_dest = destination
+    if not top_trains:
+        candidate_hubs = []
+        try:
+            from maps_service import find_nearest_transit_hub
+            hub_info = find_nearest_transit_hub(destination, hub_type="railway_station")
+            if hub_info and hub_info.get("hub_name"):
+                candidate_hubs.append(hub_info["hub_name"])
+        except Exception:
+            pass
+        if arr_airport_city and arr_airport_city.lower() != destination.strip().lower():
+            candidate_hubs.append(arr_airport_city)
+        if arr_airport_name:
+            # e.g. "Cochin International Airport" -> "Cochin" / "Ernakulam"
+            city_word = arr_airport_name.split()[0]
+            if city_word.lower() not in [c.lower() for c in candidate_hubs]:
+                candidate_hubs.append(city_word)
+
+        for hub_name in candidate_hubs:
+            try:
+                hub_code, _, _, _ = resolve_city_to_station(hub_name)
+                if hub_code == dst_stn_code:
+                    continue
+                hub_res_str = execute_train_search.invoke({
+                    "source": source,
+                    "destination": hub_name,
+                    "journey_date": travel_date,
+                    "travel_class": travel_class,
+                })
+                hub_data = json.loads(hub_res_str)
+                hub_trains = hub_data.get("top_trains") or hub_data.get("trains") or []
+                if hub_trains:
+                    top_trains = hub_trains
+                    rec_trains = hub_data.get("recommendations") or {}
+                    actual_rail_dest = hub_name
+                    train_no_service_msg = None
+                    train_alt_date = None
+                    break
+            except Exception:
+                continue
+
     best_t = rec_trains.get("best_overall") or (top_trains[0] if top_trains else {})
     cheap_t = rec_trains.get("cheapest") or (top_trains[-1] if top_trains else {})
     t_fare_per_pax = _get_train_fare(best_t)
@@ -747,12 +789,13 @@ def plan_end_to_end_journey(
     flight_booking_url = TransportConfig.FLIGHTS_BOOKING_URL
 
     try:
+        flight_class = travel_class if travel_class in ("Economy", "Premium Economy", "Business", "First") else "Economy"
         flight_res_str = execute_flight_search.invoke({
             "departure_iata": dep_iata,
             "arrival_iata": arr_iata,
             "travel_date": travel_date,
             "passengers": search_pax,
-            "travel_class": "Economy",
+            "travel_class": flight_class,
         })
         flight_data = json.loads(flight_res_str)
         flight_options = (
@@ -788,6 +831,62 @@ def plan_end_to_end_journey(
         t_carrier = f"Connecting Train to {destination}"
         t_timings = "Check IRCTC for connecting schedules"
 
+    # Destination Last-Mile checks (when airport/railhead is >15 km from final destination, e.g. COK -> Alappuzha)
+    last_mile_flight_leg = None
+    last_mile_flight_cost = 0
+    lm_flight_dur_mins = 0
+    norm_dest_lower = destination.strip().lower()
+    if has_flights and (arr_airport_name or arr_airport_city):
+        arr_hub_label = arr_airport_name or f"{arr_airport_city} Airport ({arr_iata})"
+        lm_f_transit = calculate_generic_road_transit(from_place=arr_hub_label, to_place=destination, passengers=pax)
+        lm_f_dist = float(lm_f_transit.get("distance_km") or 0.0)
+        if lm_f_dist >= 15.0:
+            lm_f_dur = str(lm_f_transit.get("estimated_duration_formatted") or "Airport Transfer")
+            lm_flight_dur_mins = int(lm_f_transit.get("estimated_duration_minutes") or 0)
+            lm_f_opts = lm_f_transit.get("options", {})
+            last_mile_flight_cost = int(
+                lm_f_opts.get("private_cab", {}).get("total_fare_inr")
+                or lm_f_opts.get("auto", {}).get("total_fare_inr", 0)
+            )
+            if last_mile_flight_cost > 0:
+                best_f_total += last_mile_flight_cost
+                last_mile_flight_leg = _build_leg_card(
+                    badge_status="Estimated",
+                    badge_type="Road",
+                    date_label=f"Leg {'3' if first_mile_flight_leg else '2'} · Last-Mile Airport Cab · {travel_date}",
+                    route_title=f"{arr_hub_label} ({arr_iata}) ➔ {destination}",
+                    carrier_subtitle=f"Prepaid Airport Taxi · {lm_f_dist} km ({lm_f_dur})",
+                    total_fare_inr=last_mile_flight_cost,
+                    passengers=pax,
+                    action_button_text="Book Airport Cab",
+                )
+
+    last_mile_train_leg = None
+    last_mile_train_cost = 0
+    lm_train_dur_mins = 0
+    if actual_rail_dest.strip().lower() != norm_dest_lower:
+        lm_t_transit = calculate_generic_road_transit(from_place=actual_rail_dest, to_place=destination, passengers=pax)
+        lm_t_dist = float(lm_t_transit.get("distance_km") or 0.0)
+        lm_t_dur = str(lm_t_transit.get("estimated_duration_formatted") or "Station Transfer")
+        lm_train_dur_mins = int(lm_t_transit.get("estimated_duration_minutes") or 0)
+        lm_t_opts = lm_t_transit.get("options", {})
+        last_mile_train_cost = int(
+            lm_t_opts.get("private_cab", {}).get("total_fare_inr")
+            or lm_t_opts.get("auto", {}).get("total_fare_inr", 0)
+        )
+        if last_mile_train_cost > 0 or lm_t_dist > 0:
+            t_total += last_mile_train_cost
+            last_mile_train_leg = _build_leg_card(
+                badge_status="Estimated",
+                badge_type="Road",
+                date_label=f"Leg {'3' if first_mile_train_leg else '2'} · Last-Mile Station Transfer · {travel_date}",
+                route_title=f"{actual_rail_dest} ➔ {destination}",
+                carrier_subtitle=f"Station Cab / Auto · {lm_t_dist} km ({lm_t_dur})" if lm_t_dist > 0 else f"Station Cab / Auto ({lm_t_dur})",
+                total_fare_inr=last_mile_train_cost,
+                passengers=pax,
+                action_button_text="Book Station Transfer",
+            )
+
     opt_a_legs = []
     opt_a_dur_mins = 0
     opt_b_dur_mins = 0
@@ -798,7 +897,7 @@ def plan_end_to_end_journey(
         best_f = flight_options[0]
         f_dur = best_f.get("duration_formatted") or best_f.get("duration") or "Direct Flight"
         f_dur_mins = _parse_duration_minutes(best_f)
-        opt_a_dur_mins = (f_dur_mins + fm_flight_dur_mins) if f_dur_mins < 9999 else 0
+        opt_a_dur_mins = (f_dur_mins + fm_flight_dur_mins + lm_flight_dur_mins) if f_dur_mins < 9999 else 0
         stops_lbl = _format_flight_stops_label(best_f)
 
         opt_a_legs.append(
@@ -814,17 +913,19 @@ def plan_end_to_end_journey(
                 action_button_text="Open Google Flights",
             )
         )
+        if last_mile_flight_leg:
+            opt_a_legs.append(last_mile_flight_leg)
     else:
         if first_mile_train_leg:
             opt_a_legs.append(first_mile_train_leg)
         train_dur_mins = _parse_duration_minutes(best_t)
-        opt_a_dur_mins = (train_dur_mins + fm_train_dur_mins) if train_dur_mins < 9999 else 0
+        opt_a_dur_mins = (train_dur_mins + fm_train_dur_mins + lm_train_dur_mins) if train_dur_mins < 9999 else 0
         opt_a_legs.append(
             _build_leg_card(
                 badge_status="Live" if has_trains else "Estimated",
                 badge_type="Train",
                 date_label=f"Leg {'2' if first_mile_train_leg else '1'} · Rail Transit · {travel_date}",
-                route_title=f"{source} ➔ {destination}",
+                route_title=f"{source} ➔ {actual_rail_dest}",
                 carrier_subtitle=f"{t_carrier} · {t_timings} · {_format_train_seat_status(best_t, travel_class)}",
                 total_fare_inr=t_intercity_total,
                 passengers=pax,
@@ -832,18 +933,20 @@ def plan_end_to_end_journey(
                 action_button_text="Open IRCTC Booking",
             )
         )
+        if last_mile_train_leg:
+            opt_a_legs.append(last_mile_train_leg)
 
     opt_b_legs = []
     if first_mile_train_leg:
         opt_b_legs.append(first_mile_train_leg)
     train_dur_mins_b = _parse_duration_minutes(best_t)
-    opt_b_dur_mins = (train_dur_mins_b + fm_train_dur_mins) if train_dur_mins_b < 9999 else 0
+    opt_b_dur_mins = (train_dur_mins_b + fm_train_dur_mins + lm_train_dur_mins) if train_dur_mins_b < 9999 else 0
     opt_b_legs.append(
         _build_leg_card(
             badge_status="Live" if has_trains else "Estimated",
             badge_type="Train",
             date_label=f"Leg {'2' if first_mile_train_leg else '1'} · Rail Transit · {travel_date}",
-            route_title=f"{source} ➔ {destination}",
+            route_title=f"{source} ➔ {actual_rail_dest}",
             carrier_subtitle=f"{t_carrier} · {t_timings} · {_format_train_seat_status(best_t, travel_class)}",
             total_fare_inr=t_intercity_total,
             passengers=pax,
@@ -851,6 +954,8 @@ def plan_end_to_end_journey(
             action_button_text="Open IRCTC Booking",
         )
     )
+    if last_mile_train_leg:
+        opt_b_legs.append(last_mile_train_leg)
 
     other_trains = []
     for t in top_trains[:3]:
@@ -875,11 +980,20 @@ def plan_end_to_end_journey(
             "airline": f.get("airline"),
             "departure_time": f.get("departure_time"),
             "arrival_time": f.get("arrival_time"),
-            "duration": f.get("duration"),
+            "duration": f.get("duration_formatted") or f.get("duration") or "N/A",
             "price_per_pax": f_p,
             "total_fare_inr": f_p * pax,
             "booking_url": flight_booking_url,
         })
+
+    fastest_f = min(flight_options, key=_parse_duration_minutes) if has_flights else {}
+    fastest_f_raw_p = fastest_f.get("price") if has_flights else None
+    fastest_f_per_pax = int(float(fastest_f_raw_p) / search_pax) if fastest_f_raw_p else best_f_per_pax
+    fastest_f_total = (fastest_f_per_pax * pax + first_mile_flight_cost + last_mile_flight_cost) if has_flights else 0
+    fastest_mode_title = (
+        f"{fastest_f.get('airline')} ({fastest_f.get('flight_number')})" if has_flights
+        else (f"{best_t.get('train_name')} ({best_t.get('train_number')})" if has_trains else f"Train to {destination}")
+    )
 
     best_mode_title = (
         f"{flight_options[0].get('airline')} ({flight_options[0].get('flight_number')})" if has_flights
@@ -1000,9 +1114,9 @@ def plan_end_to_end_journey(
             },
             "fastest": {
                 "mode": "FLIGHT" if has_flights else "TRAIN",
-                "title": best_mode_title,
-                "price_per_pax": best_f_per_pax if has_flights else t_fare_per_pax,
-                "total_fare_inr": best_f_total if has_flights else t_total,
+                "title": fastest_mode_title,
+                "price_per_pax": fastest_f_per_pax if has_flights else t_fare_per_pax,
+                "total_fare_inr": fastest_f_total if has_flights else t_total,
                 "booking_url": flight_booking_url if has_flights else TransportConfig.IRCTC_BOOKING_URL,
             },
             "other_available_trains": other_trains,

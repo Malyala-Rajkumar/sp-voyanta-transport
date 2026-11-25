@@ -1261,46 +1261,82 @@ elif transport_mode == "🔄 Multimodal Compare (Flight vs Train)":
                 t_pkg = train_res.get("cheapest_package") or {}
                 f_pkg = flight_res.get("cheapest_package") or {}
 
-                t_fare = t_pkg.get("total_fare_inr") or 2420
-                f_fare = f_pkg.get("total_fare_inr") or 17484
+                t_fare = t_pkg.get("total_fare_inr") or 0
+                f_fare = f_pkg.get("total_fare_inr") or 0
+
+                if not t_fare and not f_fare:
+                    st.warning("Could not retrieve live train or flight fares for this route and date. Please try a different date or check inputs.")
+                    st.stop()
+
+                t_onward = t_pkg.get("onward") or {}
+                f_onward = f_pkg.get("onward") or {}
+                t_dur_str = t_onward.get("duration") or "N/A"
+                f_dur_str = f_onward.get("duration") or f_onward.get("duration_formatted") or "N/A"
+
+                def _dur_to_mins(d_val) -> int:
+                    import re as _re
+                    if not d_val:
+                        return 0
+                    s = str(d_val)
+                    m = _re.search(r"(\d+)\s*[:h]\s*(\d+)", s)
+                    if m:
+                        return int(m.group(1)) * 60 + int(m.group(2))
+                    m_h = _re.search(r"(\d+)\s*h", s)
+                    return int(m_h.group(1)) * 60 if m_h else 0
+
+                t_mins = _dur_to_mins(t_dur_str)
+                f_mins = _dur_to_mins(f_dur_str)
+                if t_mins > 0 and f_mins > 0 and t_mins > f_mins:
+                    speed_ratio = round(t_mins / f_mins, 1)
+                    saved_mins = t_mins - f_mins
+                    speed_headline = f"Flight is ~{speed_ratio}x faster"
+                    speed_delta = f"Saves ~{saved_mins // 60}h {saved_mins % 60}m transit"
+                else:
+                    speed_headline = f"Flight: {f_dur_str} | Train: {t_dur_str}"
+                    speed_delta = "Actual API durations"
 
                 # Metrics Dashboard
                 st.markdown("### 📊 Head-to-Head Comparison")
                 m1, m2, m3, m4 = st.columns(4)
                 with m1:
-                    st.metric("🚆 Train Total Fare", f"₹{t_fare:,}", f"Save ₹{abs(f_fare - t_fare):,}")
+                    t_label = f"₹{t_fare:,}" if t_fare else "Unavailable"
+                    t_delta = f"Save ₹{f_fare - t_fare:,}" if (t_fare and f_fare and f_fare > t_fare) else "Live IRCTC Fare"
+                    st.metric("🚆 Train Total Fare", t_label, t_delta)
                 with m2:
-                    st.metric("✈️ Flight Total Fare", f"₹{f_fare:,}", f"{round(f_fare / max(t_fare, 1), 1)}x of Train Cost", delta_color="inverse")
+                    f_label = f"₹{f_fare:,}" if f_fare else "Unavailable"
+                    f_delta = f"{round(f_fare / t_fare, 1)}x of Train Cost" if (t_fare and f_fare) else "Live Flight Fare"
+                    st.metric("✈️ Flight Total Fare", f_label, f_delta, delta_color="inverse" if (t_fare and f_fare) else "off")
                 with m3:
-                    st.metric("⏱️ Speed Advantage", "Flight is ~4x faster", "Saves ~4-5 hours transit")
+                    st.metric("⏱️ Speed Comparison", speed_headline, speed_delta)
                 with m4:
-                    st.metric("🌿 Eco Footprint", "Train is 89% greener", "-150 kg CO2e emissions")
+                    st.metric("🌿 Eco Footprint", "Rail has lower CO₂/pax", "Electric/rail vs aviation")
 
                 col_t, col_f = st.columns(2)
                 with col_t:
+                    t_fare_display = f"₹{t_fare:,}" if t_fare else "Unavailable on selected date"
                     st.markdown(
                         f"""
                         <div class="card-box" style="border-top: 4px solid #38bdf8;">
-                            <h4 style="color:#38bdf8; margin-top:0;">🚆 Train Advantage Summary</h4>
-                            <b>Total Round-Trip Fare:</b> ₹{t_fare:,} (for {mm_pax} passengers in AC 2-Tier)<br>
-                            <b>Luggage Allowance:</b> 40 kg per passenger free (no excess baggage stress)<br>
-                            <b>City-Center Connectivity:</b> Direct arrival in the heart of {mm_dst}<br>
-                            <b>Seat Comfort:</b> Full sleeper berths with overnight rest<br>
-                            <b>Recommendation Score:</b> <b>9.2 / 10</b> (Best for value & leisure travel)
+                            <h4 style="color:#38bdf8; margin-top:0;">🚆 Train Summary</h4>
+                            <b>Total Round-Trip Fare:</b> {t_fare_display} (for {mm_pax} passenger(s) in 2A)<br>
+                            <b>Onward Duration:</b> {t_dur_str}<br>
+                            <b>Luggage Allowance:</b> 40 kg per passenger (IRCTC standard)<br>
+                            <b>City-Center Connectivity:</b> Direct railhead arrival in {mm_dst}<br>
+                            <b>Seat Comfort:</b> Sleeper berths for overnight rest
                         </div>
                         """,
                         unsafe_allow_html=True,
                     )
                 with col_f:
+                    f_fare_display = f"₹{f_fare:,}" if f_fare else "Unavailable on selected date"
                     st.markdown(
                         f"""
                         <div class="card-box" style="border-top: 4px solid #34d399;">
-                            <h4 style="color:#34d399; margin-top:0;">✈️ Flight Advantage Summary</h4>
-                            <b>Total Round-Trip Fare:</b> ₹{f_fare:,} (for {mm_pax} passengers in Economy)<br>
-                            <b>Travel Duration:</b> ~1h 15m in the air (plus ~2h airport buffers)<br>
-                            <b>Luggage Allowance:</b> 15 kg check-in per passenger<br>
-                            <b>Ideal For:</b> Urgent or business trips where time is critical<br>
-                            <b>Recommendation Score:</b> <b>7.8 / 10</b> (Best for rapid turnaround)
+                            <h4 style="color:#34d399; margin-top:0;">✈️ Flight Summary</h4>
+                            <b>Total Round-Trip Fare:</b> {f_fare_display} (for {mm_pax} passenger(s) in Economy)<br>
+                            <b>Onward Flight Duration:</b> {f_dur_str} (plus airport security/check-in buffer)<br>
+                            <b>Luggage Allowance:</b> 15 kg check-in per passenger (typical domestic)<br>
+                            <b>Ideal For:</b> Time-critical or short-duration trips
                         </div>
                         """,
                         unsafe_allow_html=True,
@@ -1308,17 +1344,21 @@ elif transport_mode == "🔄 Multimodal Compare (Flight vs Train)":
 
                 st.markdown("---")
                 st.markdown("#### 💡 AI Travel Mode Advisor Verdict")
-                if t_fare < f_fare:
+                if t_fare and f_fare and t_fare < f_fare:
                     savings = f_fare - t_fare
                     st.success(
-                        f"🎯 **Recommendation: Choose the Train!**\n\n"
-                        f"For {mm_src} ➔ {mm_dst}, the train saves you **₹{savings:,}** for {mm_pax} passenger(s) while providing comfortable AC berths. "
-                        f"Since this is a {mm_duration}-day vacation, overnight rail travel saves you one night of hotel stay while offering city-center terminal access."
+                        f"🎯 **Recommendation: Choose the Train for Value!**\n\n"
+                        f"For {mm_src} ➔ {mm_dst}, the train saves you **₹{savings:,}** for {mm_pax} passenger(s) while providing comfortable AC berths."
+                    )
+                elif f_fare and (not t_fare or f_fare <= t_fare):
+                    st.info(
+                        f"🎯 **Recommendation: Choose the Flight!**\n\n"
+                        f"Flight offers verified availability and fastest transit for your trip to {mm_dst}."
                     )
                 else:
                     st.info(
-                        f"🎯 **Recommendation: Choose the Flight!**\n\n"
-                        f"Flight offers maximum time savings for your trip to {mm_dst}."
+                        f"🎯 **Recommendation: Choose the Train!**\n\n"
+                        f"Live train fares are available for {mm_src} ➔ {mm_dst} at ₹{t_fare:,}."
                     )
 
             except Exception as ex:

@@ -145,10 +145,10 @@ def calculate_generic_road_transit(
 
     if pax >= 4:
         cab_type = "SUV / Innova"
-        cab_fare = max(1400, int(dist * 24.0 + 300))
+        cab_fare = max(1400, int(dist * 24.0 + 250))
     else:
         cab_type = "Sedan (Dzire / Etios)"
-        cab_fare = max(900, int(dist * 18.0 + 200))
+        cab_fare = max(900, int(dist * 18.0 + 150))
 
     return {
         "is_live_api": is_live_route,
@@ -264,8 +264,8 @@ def find_off_grid_destination(dest_name: str, passengers: int = 1) -> dict[str, 
             "distance_km": dist_total,
             "duration_formatted": direct_cab_info.get("estimated_duration_formatted"),
             "duration_minutes": direct_cab_info.get("estimated_duration_minutes"),
-            "sedan_fare_inr": int(dist_total * 18.0 + 200),
-            "suv_innova_fare_inr": int(dist_total * 24.0 + 300),
+            "sedan_fare_inr": int(dist_total * 18.0 + 150),
+            "suv_innova_fare_inr": int(dist_total * 24.0 + 250),
             "notes": "Direct private vehicle drop from station to destination.",
         },
     }

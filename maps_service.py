@@ -28,13 +28,8 @@ CACHE_TTL_SECONDS = 86400
 
 
 def _format_address(addr: str) -> str:
-    """Format and normalize address dynamically for geocoding and routing services (zero hardcoding)."""
-    cleaned = str(addr).strip()
-    if not cleaned:
-        return ""
-    if "india" not in cleaned.lower():
-        return f"{cleaned}, India"
-    return cleaned
+    """Normalize address string without forcing a hardcoded country suffix."""
+    return str(addr).strip()
 
 
 def _geocode_nominatim(address: str) -> tuple[float, float] | None:
