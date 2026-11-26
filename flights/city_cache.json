@@ -82,5 +82,17 @@
     "city": "Alappuzha",
     "airport_name": "Cochin International Airport",
     "display_label": "Alappuzha (via Kochi COK, ~85 km)"
+  },
+  "narsapuram": {
+    "iata": "RJA",
+    "city": "Narsapuram",
+    "airport_name": "Rajahmundry Airport",
+    "display_label": "Narsapuram (via Rajahmundry RJA, ~80 km)"
+  },
+  "perupalem beach narsapuram": {
+    "iata": "RJA",
+    "city": "Narsapuram",
+    "airport_name": "Rajahmundry Airport",
+    "display_label": "Perupalem Beach, Narsapuram (via Rajahmundry RJA)"
   }
 }

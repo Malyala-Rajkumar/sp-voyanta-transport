@@ -181,3 +181,22 @@ def extract_response_text(messages_or_content) -> str:
             if isinstance(part, dict) and part.get("type") == "text"
         )
     return str(messages_or_content)
+
+
+async def run_transport_node(request: dict[str, Any]) -> dict[str, Any]:
+    """Programmatic Node 6b entrypoint for SP Voyanta Planning Orchestrator & Replanning Agent.
+
+    Accepts structured state (origin/source, destination, travel_date, passengers, travel_class,
+    trip_duration_days, budget) and returns structured multi-modal JSON directly without chat overhead.
+    """
+    payload = {
+        "source": request.get("source") or request.get("origin", ""),
+        "destination": request.get("destination", ""),
+        "travel_date": request.get("travel_date") or request.get("start_date", ""),
+        "passengers": int(request.get("passengers", 1)),
+        "travel_class": request.get("travel_class", "3A"),
+        "trip_duration_days": request.get("trip_duration_days"),
+        "budget": request.get("budget"),
+    }
+    raw = await asyncio.to_thread(plan_end_to_end_journey.invoke, payload)
+    return json.loads(raw)

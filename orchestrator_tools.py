@@ -8,6 +8,7 @@ and visual leg card metadata matching the SP Voyanta Itinerary Team contract.
 import json
 import os
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
 from typing import Any
 
@@ -222,6 +223,84 @@ def _build_leg_card(
         "passengers": pax,
         "booking_url": booking_url,
         "action_button_text": action_button_text,
+    }
+
+
+def _compute_return_date(travel_date: str, duration_days: int) -> str | None:
+    """Compute return date in YYYY-MM-DD from travel_date + duration_days."""
+    if not travel_date or duration_days <= 0:
+        return None
+    for fmt in ("%Y-%m-%d", "%d-%m-%Y", "%d/%m/%Y"):
+        try:
+            dt = datetime.strptime(travel_date.strip(), fmt).date()
+            return (dt + timedelta(days=int(duration_days))).strftime("%Y-%m-%d")
+        except ValueError:
+            continue
+    return None
+
+
+def _annotate_budget(pkg: dict[str, Any], budget: float | None) -> dict[str, Any]:
+    """Attach budget compliance metadata to a package when budget is specified."""
+    if budget is None or float(budget) <= 0:
+        return pkg
+    total = int(pkg.get("total_price_inr") or 0)
+    b_val = int(float(budget))
+    pkg["within_budget"] = total <= b_val
+    pkg["budget_gap_inr"] = max(0, total - b_val)
+    return pkg
+
+
+def _build_standard_tiers(
+    opt_a: dict[str, Any],
+    opt_b: dict[str, Any],
+    travel_date: str,
+    return_date: str | None,
+) -> dict[str, Any]:
+    """Produce standardized budget / balanced / comfort tiers for SP Voyanta Plan Optimizer."""
+    def _tag_source(legs: list[dict]) -> str:
+        statuses = {str(l.get("badge_status", "")).lower() for l in legs}
+        if "live" in statuses and "estimated" in statuses:
+            return "live+estimate"
+        if "live" in statuses:
+            return "live"
+        return "estimate"
+
+    a_price = int(opt_a.get("total_price_inr") or 0)
+    b_price = int(opt_b.get("total_price_inr") or 0)
+    budget_pkg = opt_b if (b_price > 0 and (a_price == 0 or b_price <= a_price)) else opt_a
+    comfort_pkg = opt_a
+
+    return {
+        "budget": {
+            "tier": "budget",
+            "title": budget_pkg.get("title"),
+            "total_price_inr": budget_pkg.get("total_price_inr", 0),
+            "duration_formatted": budget_pkg.get("total_duration_formatted", ""),
+            "departure_date": travel_date,
+            "return_date": return_date,
+            "price_source": _tag_source(budget_pkg.get("legs") or []),
+            "within_budget": budget_pkg.get("within_budget"),
+        },
+        "balanced": {
+            "tier": "balanced",
+            "title": opt_b.get("title") if a_price > b_price * 2 and b_price > 0 else opt_a.get("title"),
+            "total_price_inr": opt_b.get("total_price_inr", 0) if a_price > b_price * 2 and b_price > 0 else opt_a.get("total_price_inr", 0),
+            "duration_formatted": opt_b.get("total_duration_formatted", "") if a_price > b_price * 2 and b_price > 0 else opt_a.get("total_duration_formatted", ""),
+            "departure_date": travel_date,
+            "return_date": return_date,
+            "price_source": _tag_source((opt_b if a_price > b_price * 2 and b_price > 0 else opt_a).get("legs") or []),
+            "within_budget": (opt_b if a_price > b_price * 2 and b_price > 0 else opt_a).get("within_budget"),
+        },
+        "comfort": {
+            "tier": "comfort",
+            "title": comfort_pkg.get("title"),
+            "total_price_inr": comfort_pkg.get("total_price_inr", 0),
+            "duration_formatted": comfort_pkg.get("total_duration_formatted", ""),
+            "departure_date": travel_date,
+            "return_date": return_date,
+            "price_source": _tag_source(comfort_pkg.get("legs") or []),
+            "within_budget": comfort_pkg.get("within_budget"),
+        },
     }
 
 
@@ -714,13 +793,36 @@ def plan_end_to_end_journey(
             action_button_text="Local Station Cab",
         )
 
-    # 1. Query Trains directly from live IRCTC API
-    train_res_str = execute_train_search.invoke({
-        "source": source,
-        "destination": destination,
-        "journey_date": travel_date,
-        "travel_class": travel_class,
-    })
+    # 1 & 2. Query Trains and Flights CONCURRENTLY for lower latency
+    search_pax = min(pax, TransportConfig.MAX_AGGREGATOR_PNR_PAX)
+    flight_class = travel_class if travel_class in ("Economy", "Premium Economy", "Business", "First") else "Economy"
+
+    def _run_train_q():
+        return execute_train_search.invoke({
+            "source": source,
+            "destination": destination,
+            "journey_date": travel_date,
+            "travel_class": travel_class,
+        })
+
+    def _run_flight_q():
+        try:
+            return execute_flight_search.invoke({
+                "departure_iata": dep_iata,
+                "arrival_iata": arr_iata,
+                "travel_date": travel_date,
+                "passengers": search_pax,
+                "travel_class": flight_class,
+            })
+        except Exception:
+            return json.dumps({"status": "no_results"})
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        f_train = pool.submit(_run_train_q)
+        f_flight = pool.submit(_run_flight_q)
+        train_res_str = f_train.result()
+        flight_res_str = f_flight.result()
+
     train_data = json.loads(train_res_str)
     top_trains = train_data.get("top_trains") or train_data.get("trains") or []
     rec_trains = train_data.get("recommendations") or {}
@@ -746,7 +848,6 @@ def plan_end_to_end_journey(
         if arr_airport_city and arr_airport_city.lower() != destination.strip().lower():
             candidate_hubs.append(arr_airport_city)
         if arr_airport_name:
-            # e.g. "Cochin International Airport" -> "Cochin" / "Ernakulam"
             city_word = arr_airport_name.split()[0]
             if city_word.lower() not in [c.lower() for c in candidate_hubs]:
                 candidate_hubs.append(city_word)
@@ -780,8 +881,6 @@ def plan_end_to_end_journey(
     t_intercity_total = t_fare_per_pax * pax
     t_total = t_intercity_total + first_mile_train_cost
 
-    # 2. Query Flights (respect aggregator single-PNR limit of 9, then compute accurate per-seat and group totals)
-    search_pax = min(pax, TransportConfig.MAX_AGGREGATOR_PNR_PAX)
     flight_data = {}
     best_f_total = 0
     best_f_per_pax = 0
@@ -789,14 +888,6 @@ def plan_end_to_end_journey(
     flight_booking_url = TransportConfig.FLIGHTS_BOOKING_URL
 
     try:
-        flight_class = travel_class if travel_class in ("Economy", "Premium Economy", "Business", "First") else "Economy"
-        flight_res_str = execute_flight_search.invoke({
-            "departure_iata": dep_iata,
-            "arrival_iata": arr_iata,
-            "travel_date": travel_date,
-            "passengers": search_pax,
-            "travel_class": flight_class,
-        })
         flight_data = json.loads(flight_res_str)
         flight_options = (
             flight_data.get("top_flights")
@@ -1020,6 +1111,89 @@ def plan_end_to_end_journey(
     opt_a_cost = best_f_total if has_flights else t_total
     opt_b_cost = t_total
 
+    # Round-Trip Return Legs (when trip_duration_days > 0)
+    return_date_str = _compute_return_date(travel_date, duration_days) if is_round_trip else None
+    if is_round_trip and return_date_str:
+        def _run_ret_train():
+            try:
+                return execute_train_search.invoke({
+                    "source": actual_rail_dest,
+                    "destination": source,
+                    "journey_date": return_date_str,
+                    "travel_class": travel_class,
+                })
+            except Exception:
+                return json.dumps({"status": "no_results"})
+
+        def _run_ret_flight():
+            if not has_flights:
+                return json.dumps({"status": "no_results"})
+            try:
+                return execute_flight_search.invoke({
+                    "departure_iata": arr_iata,
+                    "arrival_iata": dep_iata,
+                    "travel_date": return_date_str,
+                    "passengers": search_pax,
+                    "travel_class": flight_class,
+                })
+            except Exception:
+                return json.dumps({"status": "no_results"})
+
+        with ThreadPoolExecutor(max_workers=2) as ret_pool:
+            rt_fut = ret_pool.submit(_run_ret_train)
+            rf_fut = ret_pool.submit(_run_ret_flight)
+            ret_train_data = json.loads(rt_fut.result())
+            ret_flight_data = json.loads(rf_fut.result())
+
+        ret_trains = ret_train_data.get("top_trains") or ret_train_data.get("trains") or []
+        ret_best_t = (ret_train_data.get("recommendations") or {}).get("best_overall") or (ret_trains[0] if ret_trains else {})
+        ret_t_fare = _get_train_fare(ret_best_t) * pax
+        if ret_best_t and ret_best_t.get("train_name"):
+            opt_b_cost += ret_t_fare
+            opt_b_legs.append(
+                _build_leg_card(
+                    badge_status="Live",
+                    badge_type="Train",
+                    date_label=f"Return · Rail Transit · {return_date_str}",
+                    route_title=f"{actual_rail_dest} ➔ {source}",
+                    carrier_subtitle=f"{ret_best_t.get('train_name')} ({ret_best_t.get('train_number', '')}) · {ret_best_t.get('departure_time', '--:--')} → {ret_best_t.get('arrival_time', '--:--')} ({ret_best_t.get('duration', '')}) · {_format_train_seat_status(ret_best_t, travel_class)}",
+                    total_fare_inr=ret_t_fare,
+                    passengers=pax,
+                    booking_url=TransportConfig.IRCTC_BOOKING_URL,
+                    action_button_text="Open IRCTC Return",
+                )
+            )
+            if not has_flights:
+                opt_a_cost += ret_t_fare
+                opt_a_legs.append(opt_b_legs[-1])
+
+        ret_flights = (
+            ret_flight_data.get("top_flights")
+            or ret_flight_data.get("best_flights")
+            or ret_flight_data.get("flights")
+            or []
+        )
+        if has_flights and ret_flights:
+            rf = ret_flights[0]
+            rf_raw_p = rf.get("price")
+            rf_per_pax = int(float(rf_raw_p) / search_pax) if rf_raw_p else 0
+            rf_total = rf_per_pax * pax
+            opt_a_cost += rf_total
+            rf_dur = rf.get("duration_formatted") or rf.get("duration") or "Direct Flight"
+            opt_a_legs.append(
+                _build_leg_card(
+                    badge_status="Live",
+                    badge_type="Flight",
+                    date_label=f"Return · Flight · {return_date_str}",
+                    route_title=f"{arr_airport_city} ({arr_iata}) ➔ {dep_airport_city} ({dep_iata})",
+                    carrier_subtitle=f"{rf.get('airline', 'Airline')} ({rf.get('flight_number', '')}) · {rf.get('departure_time', '--:--')} → {rf.get('arrival_time', '--:--')} ({rf_dur}) · {_format_flight_stops_label(rf)}",
+                    total_fare_inr=rf_total,
+                    passengers=pax,
+                    booking_url=ret_flight_data.get("booking_url") or flight_booking_url,
+                    action_button_text="Open Return Flights",
+                )
+            )
+
     # Dynamic badge assignment & recommendation narrative based on actual numbers
     if has_flights and has_trains:
         if opt_a_dur_mins > 0 and opt_b_dur_mins > 0 and opt_b_dur_mins > opt_a_dur_mins:
@@ -1065,38 +1239,48 @@ def plan_end_to_end_journey(
         badge_a = "🌟 Recommended"
         badge_b = "🚆 Alternative Route"
 
+    opt_a_pkg = _annotate_budget({
+        "option_id": "option_a",
+        "title": "Option A: Express Air Route (Fastest Turnaround)" if has_flights else f"Option A: Rail Route ({best_t.get('train_name', 'Train')})",
+        "badge": badge_a,
+        "total_price_inr": opt_a_cost,
+        "price_per_traveler_inr": int(opt_a_cost // pax),
+        "total_duration_formatted": opt_a_dur_fmt,
+        "legs": opt_a_legs,
+    }, budget)
+    opt_b_pkg = _annotate_budget({
+        "option_id": "option_b",
+        "title": f"Option B: Rail Route ({best_t.get('train_name', 'Rail')})",
+        "badge": badge_b,
+        "total_price_inr": opt_b_cost,
+        "price_per_traveler_inr": int(opt_b_cost // pax),
+        "total_duration_formatted": opt_b_dur_fmt,
+        "legs": opt_b_legs,
+    }, budget)
+
+    if budget and float(budget) > 0:
+        if not opt_a_pkg.get("within_budget") and opt_b_pkg.get("within_budget"):
+            rec_narrative += f" (Note: Option A exceeds your ₹{int(budget):,} budget; Option B fits within budget.)"
+
     res_payload = {
         "status": "success",
         "journey_type": "INTERCITY_MULTI_MODAL_COMPARISON",
         "origin": source,
         "destination": destination,
         "departure_date": travel_date,
+        "return_date": return_date_str,
         "passengers": pax,
+        "budget_inr": int(float(budget)) if budget else None,
         "is_round_trip": is_round_trip,
         "distance_km": dist_km,
         "road_driving_time": dist_time_fmt,
         "distance_source": "google_maps_routes_api" if is_live_route else "calibrated_estimation",
         "flight_available": has_flights,
         "packages": {
-            "option_a": {
-                "option_id": "option_a",
-                "title": "Option A: Express Air Route (Fastest Turnaround)" if has_flights else f"Option A: Rail Route ({best_t.get('train_name', 'Train')})",
-                "badge": badge_a,
-                "total_price_inr": opt_a_cost,
-                "price_per_traveler_inr": int(opt_a_cost // pax),
-                "total_duration_formatted": opt_a_dur_fmt,
-                "legs": opt_a_legs,
-            },
-            "option_b": {
-                "option_id": "option_b",
-                "title": f"Option B: Rail Route ({best_t.get('train_name', 'Rail')})",
-                "badge": badge_b,
-                "total_price_inr": opt_b_cost,
-                "price_per_traveler_inr": int(opt_b_cost // pax),
-                "total_duration_formatted": opt_b_dur_fmt,
-                "legs": opt_b_legs,
-            },
+            "option_a": opt_a_pkg,
+            "option_b": opt_b_pkg,
         },
+        "tiers": _build_standard_tiers(opt_a_pkg, opt_b_pkg, travel_date, return_date_str),
         "curated_recommendations": {
             "best_overall": {
                 "mode": "FLIGHT" if has_flights else "TRAIN",
